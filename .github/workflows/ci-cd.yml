@@ -99,7 +99,7 @@ jobs:
       - name: Install SSH client
         run: sudo apt-get install openssh-client
       - name: create ssh key
-        run: echo "${{ secrets.SSH_KEY }}" | tr -d '\r' > ssh-key.pem
+        run: echo "${{ secrets.SSH_KEY }}" > ssh-key.pem
       - name: update permission
         run: chmod 400 ssh-key.pem
       - name: Deploy to GCP
