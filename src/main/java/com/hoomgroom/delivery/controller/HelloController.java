@@ -8,7 +8,7 @@ public class HelloController {
 
     @GetMapping("/hello")
     public String index() {
-        return "Hello from buyProduct Services!";
+        return "Hello from deliveryService, please access our sefvice through port 8081!";
     }
 
 }
