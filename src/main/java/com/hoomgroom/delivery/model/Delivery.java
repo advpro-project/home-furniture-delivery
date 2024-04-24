@@ -1,6 +1,7 @@
 package com.hoomgroom.delivery.model;
 import lombok.Getter;
 import lombok.Setter;
+import com.hoomgroom.delivery.enums.DeliveryStatus;;
 
 @Getter @Setter
 public class Delivery {

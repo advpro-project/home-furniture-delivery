@@ -3,11 +3,14 @@ package com.hoomgroom.delivery.model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.hoomgroom.delivery.enums.DeliveryStatus;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DeliveryTest {
     private Transportation transportation;
     private Delivery delivery;
+    private DeliveryStatus deliveryStatus;
 
     @BeforeEach
     void setUp() {
