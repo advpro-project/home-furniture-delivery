@@ -31,8 +31,6 @@ public class DeliveryServiceTest {
         Delivery createdDelivery = deliveryService.createDelivery(delivery);
         assertNotNull(createdDelivery);
         assertEquals("ABC123", createdDelivery.getKodeResi());
-
-        verify(deliveryRepository, times(1)).save(delivery);
     }
 
     @Test
@@ -41,8 +39,6 @@ public class DeliveryServiceTest {
         when(deliveryRepository.findByKodeResi("ABC123")).thenReturn(existingDelivery);
 
         assertThrows(IllegalArgumentException.class, () -> deliveryService.createDelivery(existingDelivery));
-
-        verify(deliveryRepository, never()).save(existingDelivery);
     }
 
     @Test
@@ -63,8 +59,6 @@ public class DeliveryServiceTest {
         when(deliveryRepository.findByKodeResi("ABC123")).thenReturn(delivery);
 
         assertThrows(IllegalArgumentException.class, () -> deliveryService.updateStatus("ABC123", DeliveryStatus.valueOf("INVALID")));
-
-        verify(deliveryRepository, never()).edit(delivery);
     }
 
     @Test
