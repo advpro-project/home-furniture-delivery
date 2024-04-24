@@ -83,7 +83,7 @@ public class DeliveryRepositoryTest {
         Delivery originalDelivery = new Delivery(DeliveryStatus.MENUNGGU_VERIFIKASI, originalTransportation, "ABC123");
         deliveryRepository.save(originalDelivery);
 
-        Delivery updatedDelivery = new Delivery();
+        Delivery updatedDelivery = new Delivery(DeliveryStatus.MENUNGGU_VERIFIKASI, originalTransportation, "ABC123");
         updatedDelivery.setKodeResi("ABC123");
         updatedDelivery.setStatus(DeliveryStatus.DIPROSES);
         Transportation updatedTransportation = new Transportation("Motor");
