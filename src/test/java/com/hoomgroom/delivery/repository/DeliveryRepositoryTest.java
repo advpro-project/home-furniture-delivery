@@ -4,18 +4,14 @@ import com.hoomgroom.delivery.enums.DeliveryStatus;
 import com.hoomgroom.delivery.model.Delivery;
 import com.hoomgroom.delivery.model.Transportation;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DataJpaTest
 public class DeliveryRepositoryTest {
 
-    @Autowired
-    private DeliveryRepository deliveryRepository;
+    private final DeliveryRepository deliveryRepository = new DeliveryRepository();
 
     @Test
     void testCreateAndFind() {
@@ -44,7 +40,7 @@ public class DeliveryRepositoryTest {
         Delivery delivery1 = new Delivery(DeliveryStatus.MENUNGGU_VERIFIKASI, transportation1, "ABC123");
         deliveryRepository.save(delivery1);
 
-        Transportation transportation2 = new Transportation("Bike");
+        Transportation transportation2 = new Transportation("Motor");
         Delivery delivery2 = new Delivery(DeliveryStatus.DIPROSES, transportation2, "DEF456");
         deliveryRepository.save(delivery2);
 
@@ -64,7 +60,7 @@ public class DeliveryRepositoryTest {
         Delivery delivery = new Delivery(DeliveryStatus.MENUNGGU_VERIFIKASI, transportation, "ABC123");
         deliveryRepository.save(delivery);
 
-        Delivery foundDelivery = deliveryRepository.findByKodeResi(delivery.getKodeResi()).orElse(null);
+        Delivery foundDelivery = deliveryRepository.findByKodeResi(delivery.getKodeResi());
         assertNotNull(foundDelivery);
         assertEquals(delivery.getKodeResi(), foundDelivery.getKodeResi());
         assertEquals(delivery.getStatus(), foundDelivery.getStatus());
@@ -73,7 +69,7 @@ public class DeliveryRepositoryTest {
 
     @Test
     void testFindByKodeResiIfDoesNotExist() {
-        Delivery foundDelivery = deliveryRepository.findByKodeResi("nonexistentKodeResi").orElse(null);
+        Delivery foundDelivery = deliveryRepository.findByKodeResi("nonexistentKodeResi");
         assertNull(foundDelivery);
     }
 
@@ -84,18 +80,15 @@ public class DeliveryRepositoryTest {
         deliveryRepository.save(originalDelivery);
 
         Delivery updatedDelivery = new Delivery(DeliveryStatus.MENUNGGU_VERIFIKASI, originalTransportation, "ABC123");
-        updatedDelivery.setKodeResi("ABC123");
         updatedDelivery.setStatus(DeliveryStatus.DIPROSES);
         Transportation updatedTransportation = new Transportation("Motor");
         updatedDelivery.setTransportation(updatedTransportation);
 
-        deliveryRepository.edit(updatedDelivery);
+        assertTrue(deliveryRepository.edit(updatedDelivery));
 
-        Delivery retrievedDelivery = deliveryRepository.findByKodeResi(updatedDelivery.getKodeResi()).orElse(null);
-
+        Delivery retrievedDelivery = deliveryRepository.findByKodeResi(updatedDelivery.getKodeResi());
         assertNotNull(retrievedDelivery);
         assertEquals(updatedDelivery.getStatus(), retrievedDelivery.getStatus());
         assertEquals(updatedDelivery.getTransportation().getType(), retrievedDelivery.getTransportation().getType());
     }
-
 }
