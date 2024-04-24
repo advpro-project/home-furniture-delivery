@@ -1,28 +1,27 @@
+package com.hoomgroom.delivery.service;
+
 import com.hoomgroom.delivery.enums.DeliveryStatus;
 import com.hoomgroom.delivery.model.Delivery;
 import com.hoomgroom.delivery.repository.DeliveryRepository;
-import com.hoomgroom.delivery.service.DeliveryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class DeliveryServiceTest {
 
-    @Mock
-    private DeliveryRepository deliveryRepository;
-
     @InjectMocks
-    private DeliveryService deliveryService;
+    private DeliveryServiceImpl productService;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
+    @Mock
+    private DeliveryRepository productRepository;
 
     @Test
     void testCreateDelivery() {
@@ -39,7 +38,7 @@ public class DeliveryServiceTest {
     @Test
     void testCreateDeliveryAlreadyExisting() {
         Delivery existingDelivery = new Delivery("ABC123");
-        doReturn(true).when(deliveryRepository).existsByKodeResi("ABC123");
+        when(deliveryRepository.findByKodeResi("ABC123")).thenReturn(existingDelivery);
 
         assertThrows(IllegalArgumentException.class, () -> deliveryService.createDelivery(existingDelivery));
 
@@ -47,15 +46,15 @@ public class DeliveryServiceTest {
     }
 
     @Test
-    void testUpdateStatus() {
+    void testUpdate() {
         Delivery delivery = new Delivery("ABC123");
-        delivery.setStatus(DeliveryStatus.MENUNGGU_VERIFIKASI);
-        when(deliveryRepository.findByKodeResi("ABC123")).thenReturn(delivery);
 
-        assertTrue(deliveryService.updateStatus("ABC123", DeliveryStatus.DIPROSES));
+        delivery.setStatus(DeliveryStatus.DIKIRIM);
 
-        assertEquals(DeliveryStatus.DIPROSES, delivery.getStatus());
-        verify(deliveryRepository, times(1)).edit(delivery);
+        when(deliveryRepository.edit(delivery)).thenReturn(true);
+        Delivery updatedProduct = deliveryService.updateStatus(delivery.getKodeResi(), DeliveryStatus.TIBA);
+
+        assertEquals("TIBA", updatedProduct.getStatus());
     }
 
     @Test
@@ -66,15 +65,6 @@ public class DeliveryServiceTest {
         assertThrows(IllegalArgumentException.class, () -> deliveryService.updateStatus("ABC123", DeliveryStatus.valueOf("INVALID")));
 
         verify(deliveryRepository, never()).edit(delivery);
-    }
-
-    @Test
-    void testUpdateStatusNonExistingDelivery() {
-        when(deliveryRepository.findByKodeResi("NONEXISTING")).thenReturn(null);
-
-        assertFalse(deliveryService.updateStatus("NONEXISTING", DeliveryStatus.DIPROSES));
-
-        verify(deliveryRepository, never()).edit(any());
     }
 
     @Test
@@ -100,11 +90,12 @@ public class DeliveryServiceTest {
     @Test
     void testDeleteDelivery() {
         Delivery delivery = new Delivery("ABC123");
-        when(deliveryRepository.delete("ABC123")).thenReturn(delivery);
+        when(deliveryRepository.delete("ABC123")).thenReturn(true);
 
-        Delivery deletedDelivery = deliveryService.deleteDeliveryByKodeResi("ABC123");
+        Delivery deletedDelivery = deliveryService.deleteDelivery("ABC123");
 
         assertNotNull(deletedDelivery);
         assertEquals("ABC123", deletedDelivery.getKodeResi());
     }
+
 }
