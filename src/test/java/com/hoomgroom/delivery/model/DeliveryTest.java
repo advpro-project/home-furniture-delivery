@@ -1,35 +1,36 @@
 package com.hoomgroom.delivery.model;
 
-import org.junit.jupiter.api.BeforeEach;
+import com.hoomgroom.delivery.enums.DeliveryStatus;
 import org.junit.jupiter.api.Test;
 
-import com.hoomgroom.delivery.enums.DeliveryStatus;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class DeliveryTest {
-    private Transportation transportation;
-    private Delivery delivery;
-    private DeliveryStatus deliveryStatus;
-
-    @BeforeEach
-    void setUp() {
-        this.transportation = new Transportation("Truck");
-        this.delivery = new Delivery(DeliveryStatus.MENUNGGU_VERIFIKASI, transportation, "ABC123");
-    }
 
     @Test
     void testGetDeliveryStatus() {
+        Delivery delivery = new Delivery("ABC123");
         assertEquals(DeliveryStatus.MENUNGGU_VERIFIKASI, delivery.getStatus());
     }
 
     @Test
     void testGetTransportation() {
+        Transportation transportation = new Transportation("Truck");
+        Delivery delivery = new Delivery("ABC123");
+        delivery.setTransportation(transportation);
         assertEquals("Truck", delivery.getTransportation().getType());
     }
 
     @Test
+    void testGetTransportationNull() {
+        Delivery delivery = new Delivery("ABC123");
+        assertNull(delivery.getTransportation());
+    }
+
+    @Test
     void testGetKodeResi() {
+        Delivery delivery = new Delivery("ABC123");
         assertEquals("ABC123", delivery.getKodeResi());
     }
 }
