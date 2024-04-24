@@ -18,10 +18,10 @@ import static org.mockito.Mockito.*;
 public class DeliveryServiceTest {
 
     @InjectMocks
-    private DeliveryServiceImpl productService;
+    private DeliveryServiceImpl deliveryService;
 
     @Mock
-    private DeliveryRepository productRepository;
+    private DeliveryRepository deliveryRepository;
 
     @Test
     void testCreateDelivery() {
