@@ -17,7 +17,7 @@ public class DeliveryController {
     private DeliveryService deliveryService;
 
     @PostMapping
-    public Delivery createDelivery(Delivery delivery) {
+    public Delivery createDelivery(@RequestBody Delivery delivery) {
         return deliveryService.createDelivery(delivery);
     }
 
@@ -27,24 +27,24 @@ public class DeliveryController {
     }
 
     @GetMapping("/{kodeResi}")
-    public Delivery getDeliveryByKodeResi(String kodeResi) {
+    public Delivery getDeliveryByKodeResi(@PathVariable String kodeResi) {
         return deliveryService.findByKodeResi(kodeResi);
     }
 
     @PutMapping("/{kodeResi}/status")
-    public Delivery updateDeliveryStatus(String kodeResi,
-                                         DeliveryStatus newStatus) {
+    public Delivery updateDeliveryStatus(@PathVariable String kodeResi,
+                                         @RequestParam DeliveryStatus newStatus) {
         return deliveryService.updateStatus(kodeResi, newStatus);
     }
 
     @PutMapping("/{kodeResi}/transportation")
-    public Delivery updateDeliveryTransportation(String kodeResi,
-                                                 Transportation newTransportation) {
+    public Delivery updateDeliveryTransportation(@PathVariable String kodeResi,
+                                                 @RequestBody Transportation newTransportation) {
         return deliveryService.updateTransportation(kodeResi, newTransportation);
     }
 
     @DeleteMapping("/{kodeResi}")
-    public void deleteDelivery(String kodeResi) {
+    public void deleteDelivery(@PathVariable String kodeResi) {
         deliveryService.deleteDelivery(kodeResi);
     }
 }
