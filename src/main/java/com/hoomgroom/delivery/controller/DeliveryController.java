@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/deliveries")
@@ -32,9 +33,9 @@ public class DeliveryController {
     }
 
     @PutMapping("/{kodeResi}/status")
-    public Delivery updateDeliveryStatus(@PathVariable String kodeResi,
+    public CompletableFuture<Delivery> updateDeliveryStatus(@PathVariable String kodeResi,
                                          @RequestParam DeliveryStatus newStatus) {
-        return deliveryService.updateStatus(kodeResi, newStatus);
+        return deliveryService.updateStatusAsync(kodeResi, newStatus);
     }
 
     @PutMapping("/{kodeResi}/transportation")

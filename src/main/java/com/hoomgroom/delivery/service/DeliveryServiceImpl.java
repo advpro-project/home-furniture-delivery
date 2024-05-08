@@ -5,9 +5,11 @@ import com.hoomgroom.delivery.model.Delivery;
 import com.hoomgroom.delivery.model.Transportation;
 import com.hoomgroom.delivery.repository.DeliveryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class DeliveryServiceImpl implements DeliveryService {
@@ -36,16 +38,14 @@ public class DeliveryServiceImpl implements DeliveryService {
     }
 
     @Override
-    public Delivery updateStatus(String kodeResi, DeliveryStatus newStatus) {
+    @Async 
+    public CompletableFuture<Delivery> updateStatusAsync(String kodeResi, DeliveryStatus newStatus) {
         Delivery delivery = deliveryRepository.findByKodeResi(kodeResi);
         if (delivery != null) {
             delivery.setStatus(newStatus);
-            // Use edit method to update the delivery
-            if (deliveryRepository.edit(delivery)) {
-                return delivery;
-            }
+            deliveryRepository.save(delivery);
         }
-        return null;
+        return CompletableFuture.completedFuture(delivery);
     }
 
     @Override
