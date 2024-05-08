@@ -12,6 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.util.concurrent.CompletableFuture;
+
 @ExtendWith(MockitoExtension.class)
 public class DeliveryServiceTest {
 
@@ -33,15 +35,23 @@ public class DeliveryServiceTest {
     }
 
     @Test
-    void testUpdate() {
-        Delivery delivery = new Delivery("ABC123");
+    void testUpdateStatusAsync() throws Exception {
+        String kodeResi = "ABC123";
+        Delivery delivery = new Delivery(kodeResi);
+        delivery.setStatus(DeliveryStatus.MENUNGGU_VERIFIKASI);
+
+        // Mock the asynchronous behavior
+        when(deliveryRepository.findByKodeResi(kodeResi)).thenReturn(delivery);
         when(deliveryRepository.save(delivery)).thenReturn(delivery);
-        Delivery createdDelivery = deliveryService.createDelivery(delivery);
-        when(deliveryRepository.edit(createdDelivery)).thenReturn(true);
-        // Ini dibutuhkan karena pada test tidak benar benar menambahkan ke repository (mock behavior)
-        when(deliveryRepository.findByKodeResi(createdDelivery.getKodeResi())).thenReturn(createdDelivery);
-        Delivery updatedProduct = deliveryService.updateStatus(createdDelivery.getKodeResi(), DeliveryStatus.TIBA);
-        assertEquals(DeliveryStatus.TIBA, updatedProduct.getStatus());
+
+        // Call the asynchronous method
+        CompletableFuture<Delivery> futureDelivery = deliveryService.updateStatusAsync(kodeResi, DeliveryStatus.DIPROSES);
+
+        // Wait for the asynchronous computation to complete
+        Delivery updatedDelivery = futureDelivery.get();
+
+        // Assert the result
+        assertEquals(DeliveryStatus.DIPROSES, updatedDelivery.getStatus());
     }
 
 
