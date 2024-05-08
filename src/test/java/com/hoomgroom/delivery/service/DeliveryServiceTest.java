@@ -68,7 +68,7 @@ public class DeliveryServiceTest {
     @Test
     void testDeleteDelivery() {
         Delivery delivery = new Delivery("ABC123");
-        when(deliveryRepository.delete("ABC123")).thenReturn(true);
+        when(deliveryRepository.deleteByKodeResi("ABC123")).thenReturn(true);
 
         Delivery deletedDelivery = deliveryService.deleteDelivery("ABC123");
 

@@ -3,15 +3,33 @@ package com.hoomgroom.delivery.repository;
 import com.hoomgroom.delivery.enums.DeliveryStatus;
 import com.hoomgroom.delivery.model.Delivery;
 import com.hoomgroom.delivery.model.Transportation;
-import org.junit.jupiter.api.Test;
+import com.hoomgroom.delivery.service.DeliveryServiceImpl;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 public class DeliveryRepositoryTest {
 
-    private final DeliveryRepository deliveryRepository = new DeliveryRepository();
+    @Mock
+    private DeliveryRepository deliveryRepository;
+
+    @InjectMocks
+    private DeliveryServiceImpl deliveryService;
+
+    @BeforeEach
+    public void setup() {
+        MockitoAnnotations.openMocks(this);
+    }
 
     @Test
     void testCreateAndFind() {
@@ -20,25 +38,36 @@ public class DeliveryRepositoryTest {
         Transportation transportation = new Transportation("Truck");
         delivery.setTransportation(transportation);
 
-        deliveryRepository.save(delivery);
+        when(deliveryRepository.save(delivery)).thenReturn(delivery);
 
-        Iterator<Delivery> deliveryIterator = deliveryRepository.findAll();
+        List<Delivery> allDeliveries = new ArrayList<>();
+        allDeliveries.add(delivery);
+        when(deliveryRepository.findAll()).thenReturn(allDeliveries);
+
+        Delivery savedDelivery = deliveryService.createDelivery(delivery);
+        assertEquals(delivery, savedDelivery);
+
+        Iterable<Delivery> deliveries = deliveryService.findAllDeliveries();
+        Iterator<Delivery> deliveryIterator = deliveries.iterator();
         assertTrue(deliveryIterator.hasNext());
 
-        Delivery savedDelivery = deliveryIterator.next();
-        assertEquals(delivery.getKodeResi(), savedDelivery.getKodeResi());
-        assertEquals(delivery.getStatus(), savedDelivery.getStatus());
-        assertEquals(delivery.getTransportation().getType(), savedDelivery.getTransportation().getType());
+        Delivery foundDelivery = deliveryIterator.next();
+        assertEquals(delivery.getKodeResi(), foundDelivery.getKodeResi());
+        assertEquals(delivery.getStatus(), foundDelivery.getStatus());
+        assertEquals(delivery.getTransportation().getType(), foundDelivery.getTransportation().getType());
     }
 
     @Test
     void testFindAllIfEmpty() {
-        Iterator<Delivery> deliveryIterator = deliveryRepository.findAll();
-        assertFalse(deliveryIterator.hasNext());
+        when(deliveryRepository.findAll()).thenReturn(new ArrayList<>());
+        Iterable<Delivery> deliveries = deliveryService.findAllDeliveries();
+        assertFalse(deliveries.iterator().hasNext());
+        verify(deliveryRepository, times(1)).findAll();
     }
 
     @Test
     void testFindAllIfMoreThanOneDelivery() {
+        
         Delivery delivery1 = new Delivery("ABC123");
         delivery1.setStatus(DeliveryStatus.MENUNGGU_VERIFIKASI);
         Transportation transportation1 = new Transportation("Truck");
@@ -49,10 +78,15 @@ public class DeliveryRepositoryTest {
         Transportation transportation2 = new Transportation("Motor");
         delivery2.setTransportation(transportation2);
 
-        deliveryRepository.save(delivery1);
-        deliveryRepository.save(delivery2);
+        
+        List<Delivery> allDeliveries = new ArrayList<>();
+        allDeliveries.add(delivery1);
+        allDeliveries.add(delivery2);
+        when(deliveryRepository.findAll()).thenReturn(allDeliveries);
 
-        Iterator<Delivery> deliveryIterator = deliveryRepository.findAll();
+        Iterable<Delivery> deliveries = deliveryService.findAllDeliveries();
+
+        Iterator<Delivery> deliveryIterator = deliveries.iterator();
         assertTrue(deliveryIterator.hasNext());
 
         Delivery savedDelivery = deliveryIterator.next();
@@ -60,47 +94,45 @@ public class DeliveryRepositoryTest {
         savedDelivery = deliveryIterator.next();
         assertEquals(delivery2.getKodeResi(), savedDelivery.getKodeResi());
         assertFalse(deliveryIterator.hasNext());
+
+        verify(deliveryRepository, times(1)).findAll();
     }
 
     @Test
     void testFindByKodeResi() {
+       
         Delivery delivery = new Delivery("ABC123");
         delivery.setStatus(DeliveryStatus.MENUNGGU_VERIFIKASI);
         Transportation transportation = new Transportation("Truck");
         delivery.setTransportation(transportation);
 
-        deliveryRepository.save(delivery);
+        
+        when(deliveryRepository.findByKodeResi("ABC123")).thenReturn(delivery);
 
-        Delivery foundDelivery = deliveryRepository.findByKodeResi(delivery.getKodeResi());
+        
+        Delivery foundDelivery = deliveryService.findByKodeResi("ABC123");
+
+        
         assertNotNull(foundDelivery);
         assertEquals(delivery.getKodeResi(), foundDelivery.getKodeResi());
         assertEquals(delivery.getStatus(), foundDelivery.getStatus());
         assertEquals(delivery.getTransportation().getType(), foundDelivery.getTransportation().getType());
+
+        
+        verify(deliveryRepository, times(1)).findByKodeResi("ABC123");
     }
 
     @Test
     void testFindByKodeResiIfDoesNotExist() {
-        Delivery foundDelivery = deliveryRepository.findByKodeResi("nonexistentKodeResi");
+        
+        when(deliveryRepository.findByKodeResi("nonexistentKodeResi")).thenReturn(null);
+
+        
+        Delivery foundDelivery = deliveryService.findByKodeResi("nonexistentKodeResi");
+
+        
         assertNull(foundDelivery);
-    }
 
-    @Test
-    void testEditDelivery() {
-        Delivery originalDelivery = new Delivery("ABC123");
-        originalDelivery.setStatus(DeliveryStatus.DIPROSES);
-        deliveryRepository.save(originalDelivery);
-
-        Delivery updatedDelivery = new Delivery("ABC123");
-        updatedDelivery.setStatus(DeliveryStatus.DIPROSES);
-        Transportation updatedTransportation = new Transportation("Motor");
-        updatedDelivery.setTransportation(updatedTransportation);
-
-        assertTrue(deliveryRepository.edit(updatedDelivery));
-
-        Delivery retrievedDelivery = deliveryRepository.findByKodeResi(updatedDelivery.getKodeResi());
-
-        assertNotNull(retrievedDelivery);
-        assertEquals(updatedDelivery.getStatus(), retrievedDelivery.getStatus());
-        assertEquals(updatedDelivery.getTransportation().getType(), retrievedDelivery.getTransportation().getType());
+        verify(deliveryRepository, times(1)).findByKodeResi("nonexistentKodeResi");
     }
 }

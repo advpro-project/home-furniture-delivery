@@ -7,9 +7,7 @@ import com.hoomgroom.delivery.repository.DeliveryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Iterator;
 
 @Service
 public class DeliveryServiceImpl implements DeliveryService {
@@ -28,11 +26,9 @@ public class DeliveryServiceImpl implements DeliveryService {
 
     @Override
     public List<Delivery> findAllDeliveries() {
-        Iterator<Delivery> deliveryIterator = deliveryRepository.findAll();
-        List<Delivery> allDeliveries = new ArrayList<>();
-        deliveryIterator.forEachRemaining(allDeliveries::add);
-        return allDeliveries;
+        return deliveryRepository.findAll();
     }
+
 
     @Override
     public Delivery findByKodeResi(String kodeResi) {
@@ -44,6 +40,7 @@ public class DeliveryServiceImpl implements DeliveryService {
         Delivery delivery = deliveryRepository.findByKodeResi(kodeResi);
         if (delivery != null) {
             delivery.setStatus(newStatus);
+            // Use edit method to update the delivery
             if (deliveryRepository.edit(delivery)) {
                 return delivery;
             }
@@ -56,16 +53,14 @@ public class DeliveryServiceImpl implements DeliveryService {
         Delivery delivery = deliveryRepository.findByKodeResi(kodeResi);
         if (delivery != null && delivery.getStatus() == DeliveryStatus.DIPROSES) {
             delivery.setTransportation(newTransportation);
-            if (deliveryRepository.edit(delivery)) {
-                return delivery;
-            }
+            return deliveryRepository.save(delivery);
         }
         return null;
     }
 
     @Override
     public Delivery deleteDelivery(String kodeResi) {
-        if (deliveryRepository.delete(kodeResi)) {
+        if (deliveryRepository.deleteByKodeResi(kodeResi)) {
             return new Delivery(kodeResi);
         }
         return null;
