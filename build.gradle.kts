@@ -32,6 +32,9 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.postgresql:postgresql")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    runtimeOnly("io.micrometer:micrometer-registry-prometheus")
 }
 
 tasks.withType<Test> {
