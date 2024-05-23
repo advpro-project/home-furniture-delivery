@@ -7,6 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DeliveryRepository extends JpaRepository<Delivery, String> {
     Delivery findByKodeResi(String kodeResi);
-    boolean edit(Delivery updatedDelivery);
     boolean deleteByKodeResi(String kodeResi);
 }

@@ -3,8 +3,6 @@ package com.hoomgroom.delivery.model;
 import java.util.UUID;
 import java.util.List;
 
-import com.hoomgroom.authentication.buyproduct.model.Furniture;
-import com.hoomgroom.authentication.model.User;
 import com.hoomgroom.delivery.enums.DeliveryStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,17 +39,17 @@ public class Delivery {
     private List<Furniture> furnitureList;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    @JoinColumn(name = "user_email", referencedColumnName = "email")
+    private User userDelivery;
 
     public Delivery(String kodeResi) {
         this.kodeResi = kodeResi;
     }
 
-    public Delivery(DeliveryStatus status, Transportation transportation, List<Furniture> furnitureList, User user) {
+    public Delivery(DeliveryStatus status, Transportation transportation, List<Furniture> furnitureList, User userDelivery) {
         this.status = status;
         this.transportation = transportation;
         this.furnitureList = furnitureList;
-        this.user = user;
+        this.userDelivery = userDelivery;
     }
 }

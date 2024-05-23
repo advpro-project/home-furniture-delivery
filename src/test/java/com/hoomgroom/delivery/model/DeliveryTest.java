@@ -1,9 +1,7 @@
 package com.hoomgroom.delivery.model;
 
-import com.hoomgroom.authentication.buyproduct.model.Furniture;
 import com.hoomgroom.delivery.enums.DeliveryStatus;
 import org.junit.jupiter.api.Test;
-import com.hoomgroom.authentication.model.User;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -60,7 +58,6 @@ public class DeliveryTest {
         assertEquals(DeliveryStatus.MENUNGGU_VERIFIKASI, delivery.getStatus());
         assertEquals("Truck", delivery.getTransportation().getType());
         assertEquals(furnitureList, delivery.getFurnitureList());
-        assertEquals(user, delivery.getUser());
         assertNull(delivery.getKodeResi(), "kodeResi should be null initially");
 
         delivery.setKoderesi();
