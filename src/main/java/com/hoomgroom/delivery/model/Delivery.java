@@ -23,7 +23,7 @@ public class Delivery {
 
     public void setKoderesi(){
         UUID kodeResiUUID = UUID.randomUUID();
-        String kodeResiGenerated = kodeResiUUID.toString();
+        String kodeResiGenerated = "HG-" + kodeResiUUID.toString();
         this.kodeResi = kodeResiGenerated;
     }
 
@@ -48,9 +48,10 @@ public class Delivery {
         this.kodeResi = kodeResi;
     }
 
-    public Delivery(List<Furniture> furnitureList, User user, String kodeResi) {
+    public Delivery(DeliveryStatus status, Transportation transportation, List<Furniture> furnitureList, User user) {
+        this.status = status;
+        this.transportation = transportation;
         this.furnitureList = furnitureList;
         this.user = user;
-        this.kodeResi = kodeResi;
     }
 }
