@@ -1,4 +1,5 @@
-package com.hoomgroom.authentication.enums;
+package com.hoomgroom.delivery.enums;
+
 import lombok.Getter;
 
 @Getter

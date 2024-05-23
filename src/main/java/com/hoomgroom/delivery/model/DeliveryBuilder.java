@@ -2,8 +2,6 @@ package com.hoomgroom.delivery.model;
 
 import com.hoomgroom.delivery.enums.DeliveryStatus;
 import java.util.List;
-import com.hoomgroom.authentication.buyproduct.model.Furniture;
-import com.hoomgroom.authentication.model.User;
 
 public class DeliveryBuilder {
     private DeliveryStatus status = DeliveryStatus.MENUNGGU_VERIFIKASI;
