@@ -7,6 +7,7 @@ import com.hoomgroom.delivery.enums.DeliveryStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.Generated;
 
 import jakarta.persistence.*;
 
@@ -19,12 +20,14 @@ public class Delivery {
     @Id 
     private String kodeResi;
 
+    @Generated
     public void setKoderesi(){
         UUID kodeResiUUID = UUID.randomUUID();
         String kodeResiGenerated = "HG-" + kodeResiUUID.toString();
         this.kodeResi = kodeResiGenerated;
     }
 
+    @Generated
     @Enumerated(EnumType.STRING)
     private DeliveryStatus status = DeliveryStatus.MENUNGGU_VERIFIKASI;
 
@@ -42,10 +45,12 @@ public class Delivery {
     @JoinColumn(name = "user_email", referencedColumnName = "email")
     private User userDelivery;
 
+    @Generated
     public Delivery(String kodeResi) {
         this.kodeResi = kodeResi;
     }
 
+    @Generated
     public Delivery(DeliveryStatus status, Transportation transportation, List<Furniture> furnitureList, User userDelivery) {
         this.status = status;
         this.transportation = transportation;
