@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Getter @Setter
+@SuppressWarnings("unused")
 public class Furniture {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -15,7 +15,7 @@ import static org.mockito.Mockito.*;
 import java.util.concurrent.CompletableFuture;
 
 @ExtendWith(MockitoExtension.class)
-public class DeliveryServiceTest {
+public class DeliveryServiceImplTest {
 
     @InjectMocks
     private DeliveryServiceImpl deliveryService;
@@ -77,7 +77,6 @@ public class DeliveryServiceTest {
 
     @Test
     void testDeleteDelivery() {
-        Delivery delivery = new Delivery("ABC123");
         when(deliveryRepository.deleteByKodeResi("ABC123")).thenReturn(true);
 
         Delivery deletedDelivery = deliveryService.deleteDelivery("ABC123");

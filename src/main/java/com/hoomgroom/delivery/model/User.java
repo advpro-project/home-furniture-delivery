@@ -11,6 +11,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Getter @Setter
+@SuppressWarnings("unused")
 public class User {
     private String fullName;
     private LocalDate dateOfBirth;
