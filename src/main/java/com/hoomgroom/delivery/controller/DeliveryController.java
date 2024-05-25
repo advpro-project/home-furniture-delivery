@@ -17,34 +17,34 @@ public class DeliveryController {
     @Autowired
     private DeliveryService deliveryService;
 
-    @PostMapping
+    @PostMapping("/delivery/create")
     public Delivery createDelivery(@RequestBody Delivery delivery) {
         return deliveryService.createDelivery(delivery);
     }
 
-    @GetMapping
+    @GetMapping("/getAllDeliv")
     public List<Delivery> getAllDeliveries() {
         return deliveryService.findAllDeliveries();
     }
 
-    @GetMapping("/{kodeResi}")
+    @GetMapping("/get{kodeResi}")
     public Delivery getDeliveryByKodeResi(@PathVariable String kodeResi) {
         return deliveryService.findByKodeResi(kodeResi);
     }
 
-    @PutMapping("/{kodeResi}/status")
+    @PutMapping("/updateStatus{kodeResi}/status")
     public CompletableFuture<Delivery> updateDeliveryStatus(@PathVariable String kodeResi,
                                          @RequestParam DeliveryStatus newStatus) {
         return deliveryService.updateStatusAsync(kodeResi, newStatus);
     }
 
-    @PutMapping("/{kodeResi}/transportation")
+    @PutMapping("/updateTransportation{kodeResi}/transportation")
     public Delivery updateDeliveryTransportation(@PathVariable String kodeResi,
                                                  @RequestBody Transportation newTransportation) {
         return deliveryService.updateTransportation(kodeResi, newTransportation);
     }
 
-    @DeleteMapping("/{kodeResi}")
+    @DeleteMapping("/delete{kodeResi}")
     public void deleteDelivery(@PathVariable String kodeResi) {
         deliveryService.deleteDelivery(kodeResi);
     }
