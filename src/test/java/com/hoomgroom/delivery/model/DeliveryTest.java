@@ -18,7 +18,7 @@ public class DeliveryTest {
         assertEquals(DeliveryStatus.MENUNGGU_VERIFIKASI, delivery.getStatus());
         assertNull(delivery.getTransportation());
         assertNull(delivery.getFurnitureList());
-        assertNull(delivery.getUserDelivery());
+        assertNull(delivery.getUserEmail());
     }
 
     @Test
@@ -35,21 +35,21 @@ public class DeliveryTest {
         Furniture furniture1 = new Furniture();
         Furniture furniture2 = new Furniture();
         List<Furniture> furnitureList = Arrays.asList(furniture1, furniture2);
-        User user = new User();
+        String userEmail = "test@example.com";
 
-        Delivery delivery = new Delivery(DeliveryStatus.DIKIRIM, transportation, furnitureList, user);
+        Delivery delivery = new Delivery(DeliveryStatus.DIKIRIM, transportation, furnitureList, userEmail);
 
         assertNotNull(delivery);
         assertEquals(DeliveryStatus.DIKIRIM, delivery.getStatus());
         assertEquals(transportation, delivery.getTransportation());
         assertEquals(furnitureList, delivery.getFurnitureList());
-        assertEquals(user, delivery.getUserDelivery());
+        assertEquals(userEmail, delivery.getUserEmail());
     }
 
     @Test
     void testSetKoderesi() {
         Delivery delivery = new Delivery();
-        delivery.setKoderesi();
+        delivery.setKodeResi();
 
         assertNotNull(delivery.getKodeResi(), "kodeResi should be set");
         assertTrue(delivery.getKodeResi().startsWith("HG-"), "kodeResi should start with 'HG-'");
@@ -94,12 +94,12 @@ public class DeliveryTest {
     }
 
     @Test
-    void testSetAndGetUserDelivery() {
-        User user = new User();
+    void testSetAndGetUserEmail() {
+        String userEmail = "test@example.com";
         Delivery delivery = new Delivery("ABC123");
-        delivery.setUserDelivery(user);
+        delivery.setUserEmail(userEmail);
 
-        assertEquals(user, delivery.getUserDelivery());
+        assertEquals(userEmail, delivery.getUserEmail());
     }
 
     @Test
@@ -108,17 +108,22 @@ public class DeliveryTest {
         Furniture furniture1 = new Furniture();
         Furniture furniture2 = new Furniture();
         List<Furniture> furnitureList = Arrays.asList(furniture1, furniture2);
-        User user = new User();
+        String userEmail = "test@example.com";
 
-        Delivery delivery = new Delivery(DeliveryStatus.MENUNGGU_VERIFIKASI, transportation, furnitureList, user);
+        Delivery delivery = new DeliveryBuilder()
+                .status(DeliveryStatus.MENUNGGU_VERIFIKASI)
+                .transportation(transportation)
+                .furnitureList(furnitureList)
+                .userEmail(userEmail)
+                .build();
 
         assertNotNull(delivery);
         assertEquals(DeliveryStatus.MENUNGGU_VERIFIKASI, delivery.getStatus());
         assertEquals("Truck", delivery.getTransportation().getType());
         assertEquals(furnitureList, delivery.getFurnitureList());
-        assertEquals(user, delivery.getUserDelivery());
+        assertEquals(userEmail, delivery.getUserEmail());
 
-        delivery.setKoderesi();
+        delivery.setKodeResi();
 
         assertNotNull(delivery.getKodeResi(), "kodeResi should be set");
         assertTrue(delivery.getKodeResi().startsWith("HG-"), "kodeResi should start with 'HG-'");

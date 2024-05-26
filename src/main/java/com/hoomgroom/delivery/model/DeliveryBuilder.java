@@ -2,16 +2,14 @@ package com.hoomgroom.delivery.model;
 
 import com.hoomgroom.delivery.enums.DeliveryStatus;
 import java.util.List;
-
 import lombok.Generated;
 
 @Generated
 public class DeliveryBuilder {
-    @Generated
     private DeliveryStatus status = DeliveryStatus.MENUNGGU_VERIFIKASI;
     private Transportation transportation;
     private List<Furniture> furnitureList;
-    private User user;
+    private String userEmail;
 
     @Generated
     public DeliveryBuilder status(DeliveryStatus status) {
@@ -32,13 +30,13 @@ public class DeliveryBuilder {
     }
 
     @Generated
-    public DeliveryBuilder user(User user) {
-        this.user = user;
+    public DeliveryBuilder userEmail(String userEmail) {
+        this.userEmail = userEmail;
         return this;
     }
 
     @Generated
     public Delivery build() {
-        return new Delivery(status, transportation, furnitureList, user);
+        return new Delivery(status, transportation, furnitureList, userEmail);
     }
 }

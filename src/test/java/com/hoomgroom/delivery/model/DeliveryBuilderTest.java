@@ -13,12 +13,12 @@ public class DeliveryBuilderTest {
     @Test
     void testDefaultBuild() {
         Delivery delivery = new DeliveryBuilder().build();
-        
+
         assertNotNull(delivery);
         assertEquals(DeliveryStatus.MENUNGGU_VERIFIKASI, delivery.getStatus());
         assertNull(delivery.getTransportation());
         assertNull(delivery.getFurnitureList());
-        assertNull(delivery.getUserDelivery());
+        assertNull(delivery.getUserEmail());
     }
 
     @Test
@@ -26,7 +26,7 @@ public class DeliveryBuilderTest {
         Delivery delivery = new DeliveryBuilder()
                 .status(DeliveryStatus.DIKIRIM)
                 .build();
-        
+
         assertNotNull(delivery);
         assertEquals(DeliveryStatus.DIKIRIM, delivery.getStatus());
     }
@@ -34,11 +34,11 @@ public class DeliveryBuilderTest {
     @Test
     void testBuildWithTransportation() {
         Transportation transportation = new Transportation("Truck");
-        
+
         Delivery delivery = new DeliveryBuilder()
                 .transportation(transportation)
                 .build();
-        
+
         assertNotNull(delivery);
         assertEquals(transportation, delivery.getTransportation());
         assertEquals("Truck", delivery.getTransportation().getType());
@@ -49,25 +49,25 @@ public class DeliveryBuilderTest {
         Furniture furniture1 = new Furniture();
         Furniture furniture2 = new Furniture();
         List<Furniture> furnitureList = Arrays.asList(furniture1, furniture2);
-        
+
         Delivery delivery = new DeliveryBuilder()
                 .furnitureList(furnitureList)
                 .build();
-        
+
         assertNotNull(delivery);
         assertEquals(furnitureList, delivery.getFurnitureList());
     }
 
     @Test
-    void testBuildWithUser() {
-        User user = new User();
-        
+    void testBuildWithUserEmail() {
+        String userEmail = "test@example.com";
+
         Delivery delivery = new DeliveryBuilder()
-                .user(user)
+                .userEmail(userEmail)
                 .build();
-        
+
         assertNotNull(delivery);
-        assertEquals(user, delivery.getUserDelivery());
+        assertEquals(userEmail, delivery.getUserEmail());
     }
 
     @Test
@@ -77,19 +77,19 @@ public class DeliveryBuilderTest {
         Furniture furniture1 = new Furniture();
         Furniture furniture2 = new Furniture();
         List<Furniture> furnitureList = Arrays.asList(furniture1, furniture2);
-        User user = new User();
+        String userEmail = "test@example.com";
 
         Delivery delivery = new DeliveryBuilder()
                 .status(status)
                 .transportation(transportation)
                 .furnitureList(furnitureList)
-                .user(user)
+                .userEmail(userEmail)
                 .build();
-        
+
         assertNotNull(delivery);
         assertEquals(status, delivery.getStatus());
         assertEquals(transportation, delivery.getTransportation());
         assertEquals(furnitureList, delivery.getFurnitureList());
-        assertEquals(user, delivery.getUserDelivery());
+        assertEquals(userEmail, delivery.getUserEmail());
     }
 }
