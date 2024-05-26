@@ -18,6 +18,7 @@ public class Delivery {
     @Id
     private String kodeResi;
 
+    @PrePersist
     public void setKodeResi() {
         UUID kodeResiUUID = UUID.randomUUID();
         String kodeResiGenerated = "HG-" + kodeResiUUID.toString();
