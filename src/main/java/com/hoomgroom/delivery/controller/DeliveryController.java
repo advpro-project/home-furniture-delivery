@@ -13,6 +13,7 @@ import lombok.Generated;
 
 @RestController
 @RequestMapping("/deliveries")
+@CrossOrigin(origins = {"http://localhost:3000/", "https://home-furniture-fe.vercel.app"})
 public class DeliveryController {
 
     @Autowired
