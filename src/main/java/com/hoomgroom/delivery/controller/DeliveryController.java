@@ -32,27 +32,27 @@ public class DeliveryController {
     }
 
     @Generated
-    @GetMapping("/get{kodeResi}")
+    @GetMapping("/get/{kodeResi}")
     public Delivery getDeliveryByKodeResi(@PathVariable String kodeResi) {
         return deliveryService.findByKodeResi(kodeResi);
     }
 
     @Generated
-    @PutMapping("/updateStatus{kodeResi}/status")
+    @PutMapping("/updateStatus/{kodeResi}/status")
     public CompletableFuture<Delivery> updateDeliveryStatus(@PathVariable String kodeResi,
                                          @RequestParam DeliveryStatus newStatus) {
         return deliveryService.updateStatusAsync(kodeResi, newStatus);
     }
 
     @Generated
-    @PutMapping("/updateTransportation{kodeResi}/transportation")
+    @PutMapping("/updateTransportation/{kodeResi}/transportation")
     public Delivery updateDeliveryTransportation(@PathVariable String kodeResi,
                                                  @RequestBody Transportation newTransportation) {
         return deliveryService.updateTransportation(kodeResi, newTransportation);
     }
 
     @Generated
-    @DeleteMapping("/delete{kodeResi}")
+    @DeleteMapping("/delete/{kodeResi}")
     public void deleteDelivery(@PathVariable String kodeResi) {
         deliveryService.deleteDelivery(kodeResi);
     }
