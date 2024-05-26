@@ -13,13 +13,13 @@ import lombok.Generated;
 @Entity
 @Getter @Setter
 @SuppressWarnings("unused")
+@Generated
 public class User {
     private String fullName;
     private LocalDate dateOfBirth;
     private Gender gender;
     private String username;
     
-    @Generated
     @Id
     private String email;
 

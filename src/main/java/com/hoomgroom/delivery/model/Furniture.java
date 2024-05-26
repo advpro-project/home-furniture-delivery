@@ -10,11 +10,11 @@ import lombok.Generated;
 @Entity
 @Getter @Setter
 @SuppressWarnings("unused")
+@Generated
 public class Furniture {
-    @Generated
     @Id
     private UUID id;
-    
+
     private String name;
     private String type;
     private String description;
