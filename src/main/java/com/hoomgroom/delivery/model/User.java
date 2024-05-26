@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import com.hoomgroom.delivery.enums.Gender;
 import com.hoomgroom.delivery.enums.Role;
 import jakarta.persistence.*;
+import lombok.Generated;
 
 @Entity
 @Getter @Setter
@@ -17,9 +18,11 @@ public class User {
     private LocalDate dateOfBirth;
     private Gender gender;
     private String username;
+    
+    @Generated
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private String email;
+
     private String password;
     private Role role;
     private double walletBalance;

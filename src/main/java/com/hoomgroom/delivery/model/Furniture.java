@@ -5,14 +5,16 @@ import lombok.Setter;
 
 import java.util.UUID;
 import jakarta.persistence.*;
+import lombok.Generated;
 
 @Entity
 @Getter @Setter
 @SuppressWarnings("unused")
 public class Furniture {
+    @Generated
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+    
     private String name;
     private String type;
     private String description;
