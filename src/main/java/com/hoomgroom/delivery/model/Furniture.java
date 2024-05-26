@@ -10,7 +10,6 @@ import lombok.Generated;
 @Entity
 @Getter @Setter
 @SuppressWarnings("unused")
-@Generated
 public class Furniture {
     @Id
     private UUID id;
