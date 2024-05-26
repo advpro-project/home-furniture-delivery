@@ -46,15 +46,16 @@ public class Delivery {
     private User userDelivery;
 
     @Generated
-    public Delivery(String kodeResi) {
-        this.kodeResi = kodeResi;
-    }
-
-    @Generated
     public Delivery(DeliveryStatus status, Transportation transportation, List<Furniture> furnitureList, User userDelivery) {
+        this.setKoderesi();
         this.status = status;
         this.transportation = transportation;
         this.furnitureList = furnitureList;
         this.userDelivery = userDelivery;
+    }
+
+    @Generated
+    public Delivery(String kodeResi) {
+        this.kodeResi = kodeResi;
     }
 }
