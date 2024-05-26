@@ -13,6 +13,7 @@ import lombok.Generated;
 @Entity
 @Getter @Setter
 @SuppressWarnings("unused")
+@Table(name = "user")
 public class User {
     private String fullName;
     private LocalDate dateOfBirth;
