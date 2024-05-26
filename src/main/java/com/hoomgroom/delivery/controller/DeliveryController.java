@@ -9,41 +9,49 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import lombok.Generated;
 
 @RestController
 @RequestMapping("/deliveries")
+@CrossOrigin(origins = {"http://localhost:3000", "https://home-furniture-fe.vercel.app"})
 public class DeliveryController {
 
     @Autowired
     private DeliveryService deliveryService;
 
+    @Generated
     @PostMapping("/delivery/create")
     public Delivery createDelivery(@RequestBody Delivery delivery) {
         return deliveryService.createDelivery(delivery);
     }
 
+    @Generated
     @GetMapping("/getAllDeliv")
     public List<Delivery> getAllDeliveries() {
         return deliveryService.findAllDeliveries();
     }
 
+    @Generated
     @GetMapping("/get{kodeResi}")
     public Delivery getDeliveryByKodeResi(@PathVariable String kodeResi) {
         return deliveryService.findByKodeResi(kodeResi);
     }
 
+    @Generated
     @PutMapping("/updateStatus{kodeResi}/status")
     public CompletableFuture<Delivery> updateDeliveryStatus(@PathVariable String kodeResi,
                                          @RequestParam DeliveryStatus newStatus) {
         return deliveryService.updateStatusAsync(kodeResi, newStatus);
     }
 
+    @Generated
     @PutMapping("/updateTransportation{kodeResi}/transportation")
     public Delivery updateDeliveryTransportation(@PathVariable String kodeResi,
                                                  @RequestBody Transportation newTransportation) {
         return deliveryService.updateTransportation(kodeResi, newTransportation);
     }
 
+    @Generated
     @DeleteMapping("/delete{kodeResi}")
     public void deleteDelivery(@PathVariable String kodeResi) {
         deliveryService.deleteDelivery(kodeResi);

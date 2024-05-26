@@ -1,4 +1,5 @@
 package com.hoomgroom.delivery.enums;
+import lombok.Generated;
 
 public enum DeliveryStatus {
     MENUNGGU_VERIFIKASI ("MENUNGGU_VERIFIKASI"),
@@ -9,6 +10,7 @@ public enum DeliveryStatus {
 
     private final String status;
 
+    @Generated
     private DeliveryStatus(String status){
         this.status = status;
     }
